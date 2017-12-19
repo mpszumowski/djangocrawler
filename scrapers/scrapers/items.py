@@ -8,7 +8,7 @@
 from scrapy import item
 
 
-class MinimumAmount(item.Item):
+class ScrapyItemMinimumAmount(item.Item):
     country = item.Field()
     amount = item.Field()
 
