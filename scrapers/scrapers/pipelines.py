@@ -31,14 +31,15 @@ class PovertyPipeline(object):
     def __init__(self):
         self.items = []
 
-    def process_item(self, item):
+    def process_item(self, item, spider):
         self.items.append(item)
         return item
 
-    def close_spider(self):
+    def close_spider(self, spider):
         bulk = []
         for item in self.items:
             print(item)
+            if
             obj = PovertyPercent(country=item["country"][0],
                                  percent=item["percent"][0])
             bulk.append(obj)
