@@ -24,7 +24,8 @@ class CountriesSpider(scrapy.Spider):
         rows = data.css('tr')
         exclude = [
             'Hong Kong SAR, China', 'Macao SAR, China',
-            'Sint Maarten (Dutch part)', 'St. Martin (French part)'
+            'Sint Maarten (Dutch part)', 'St. Martin (French part)',
+            'Turks and Caicos Islands'
         ]
         for row in rows:
             name = row.css('td.country div a::text').extract_first()

@@ -10,9 +10,9 @@ $(document).ready(function() {
             var countryInfo = $(`
                 <tr>
                     <td>${data[i].name}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>${data[i].population[0].estimate}</td>
+                    <td>${data[i].poverty[0].percent}</td>
+                    <td>${data[i].amount[0]}</td>
                 </tr>
             `);
             main.append(countryInfo);

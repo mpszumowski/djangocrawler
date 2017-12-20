@@ -39,7 +39,7 @@ class PopulationPipeline(object):
         population_bulk = []
         misfits_bulk = []
         for item in self.items:
-            country = Countries.objects.filter(name=item["country"][0])
+            country = Countries.objects.filter(name__iexact=item["country"][0])
             if country:
                 obj = CountryPopulation(country=country[0],
                                         estimate=item["estimate"][0],
@@ -68,7 +68,7 @@ class FoodPipeline(object):
         min_amount_bulk = []
         misfits_bulk = []
         for item in self.items:
-            country = Countries.objects.filter(name=item["country"][0])
+            country = Countries.objects.filter(name__iexact=item["country"][0])
             if country:
                 obj = MinimumAmount(country=country[0],
                                     amount=item["amount"][0],
@@ -95,7 +95,7 @@ class PovertyPipeline(object):
         poverty_bulk = []
         misfits_bulk = []
         for item in self.items:
-            country = Countries.objects.filter(name=item["country"][0])
+            country = Countries.objects.filter(name__iexact=item["country"][0])
             if country:
                 obj = PovertyPercent(country=country[0],
                                      percent=item["percent"][0],
