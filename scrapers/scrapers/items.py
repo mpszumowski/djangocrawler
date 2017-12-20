@@ -12,3 +12,8 @@ class ScrapyItemMinimumAmount(item.Item):
     country = item.Field()
     amount = item.Field()
 
+
+class ScrapyItemPoverty(item.Item):
+    country = item.Field()
+    percent = item.Field()
+

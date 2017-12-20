@@ -16,3 +16,8 @@ class MinimumAmount(models.Model):
 
     def __str__(self):
         return self.country
+
+
+class PovertyPercent(models.Model):
+    country = models.CharField(max_length=128)
+    percent = models.CharField(max_length=16)

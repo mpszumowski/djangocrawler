@@ -6,10 +6,10 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import sys
 sys.path.insert(0, '/home/maciej/workspace/sCrapProject/')
-from crawler.models import MinimumAmount
+from crawler.models import MinimumAmount, PovertyPercent
 
 
-class ScrapersPipeline(object):
+class FoodPipeline(object):
     def __init__(self, *args, **kwargs):
         self.items = []
 
@@ -18,12 +18,6 @@ class ScrapersPipeline(object):
         return item
 
     def close_spider(self, spider):
-        # model = MinimumAmount()
-        # for item in self.items:
-        #     print(object)
-        #     model.country = item["country"]
-        #     model.amount = item["amount"]
-        #     model.save()
         bulk = []
         for item in self.items:
             print(item)
@@ -31,3 +25,21 @@ class ScrapersPipeline(object):
                                 amount=item["amount"][0])
             bulk.append(obj)
         MinimumAmount.objects.bulk_create(bulk)
+
+
+class PovertyPipeline(object):
+    def __init__(self):
+        self.items = []
+
+    def process_item(self, item):
+        self.items.append(item)
+        return item
+
+    def close_spider(self):
+        bulk = []
+        for item in self.items:
+            print(item)
+            obj = PovertyPercent(country=item["country"][0],
+                                 percent=item["percent"][0])
+            bulk.append(obj)
+        PovertyPercent.objects.bulk_create(bulk)

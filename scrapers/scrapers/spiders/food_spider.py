@@ -5,6 +5,11 @@ from scrapers.items import ScrapyItemMinimumAmount
 
 class FoodSpider(scrapy.Spider):
     name = "food"
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'scrapers.pipelines.ScrapersPipeline': 300
+        }
+    }
 
     def start_requests(self):
 
