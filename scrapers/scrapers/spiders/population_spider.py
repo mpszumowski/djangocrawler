@@ -22,14 +22,11 @@ class PopulationSpider(scrapy.Spider):
     def parse(self, response):
         data = response.css('#scrollTable tbody')
         rows = data.css('tr')
-        year = response.css('#fixedTable tbody tr.level3 '
-                            + 'th:nth-child(3) div::text')
         for row in rows:
             country = row.css('td.country div a::text').extract_first()
             estimate = row.css('td:nth-child(3) div::text').extract_first()
-            data_year = year.extract_first()
             l = ItemLoader(item=ScrapyItemPopulation(), response=response)
             l.add_value('country', country)
             l.add_value('estimate', estimate)
-            l.add_value('data_year', data_year)
+            l.add_value('data_year', 2016)
             yield l.load_item()

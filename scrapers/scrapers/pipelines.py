@@ -41,7 +41,7 @@ class PopulationPipeline(object):
         for item in self.items:
             country = Countries.objects.filter(name=item["country"][0])
             if country:
-                obj = CountryPopulation(country=country,
+                obj = CountryPopulation(country=country[0],
                                         estimate=item["estimate"][0],
                                         data_year=item["data_year"][0],
                                         date_scraped=datetime.now())
@@ -52,8 +52,8 @@ class PopulationPipeline(object):
                               population_year=item["data_year"][0],
                               date_scraped=datetime.now())
                 misfits_bulk.append(obj)
-            CountryPopulation.objects.bulk_create(population_bulk)
-            Misfits.objects.bulk_create(misfits_bulk)
+        Misfits.objects.bulk_create(misfits_bulk)
+        CountryPopulation.objects.bulk_create(population_bulk)
 
 
 class FoodPipeline(object):
@@ -70,7 +70,7 @@ class FoodPipeline(object):
         for item in self.items:
             country = Countries.objects.filter(name=item["country"][0])
             if country:
-                obj = MinimumAmount(country=country,
+                obj = MinimumAmount(country=country[0],
                                     amount=item["amount"][0],
                                     date_scraped=datetime.now())
                 min_amount_bulk.append(obj)
@@ -97,7 +97,7 @@ class PovertyPipeline(object):
         for item in self.items:
             country = Countries.objects.filter(name=item["country"][0])
             if country:
-                obj = PovertyPercent(country=country,
+                obj = PovertyPercent(country=country[0],
                                      percent=item["percent"][0],
                                      data_year=item["data_year"][0],
                                      date_scraped=datetime.now())

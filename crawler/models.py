@@ -25,6 +25,7 @@ class CountryPopulation(models.Model):
     country = models.ForeignKey(Countries, on_delete=True)
     estimate = models.CharField(max_length=32)
     data_year = models.CharField(max_length=16, null=True)
+    date_scraped = models.DateField()
 
 
 class Misfits(models.Model):
