@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from crawler.views import MainView
+from crawler.views import MainView, SerializedView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('main/', MainView.as_view(), name="main"),
+    path('countries/', SerializedView.as_view(), name="countries"),
 ]
