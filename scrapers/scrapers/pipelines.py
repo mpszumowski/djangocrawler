@@ -6,11 +6,11 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import sys
 sys.path.insert(0, '/home/maciej/workspace/sCrapProject/')
-from crawler.models import MinimumAmount, PovertyPercent
+from crawler.models import (Countries, MinimumAmount, Misfits, PovertyPercent)
 
 
-class FoodPipeline(object):
-    def __init__(self, *args, **kwargs):
+class CountryPipeline(object):
+    def __init__(self):
         self.items = []
 
     def process_item(self, item, spider):
@@ -18,13 +18,36 @@ class FoodPipeline(object):
         return item
 
     def close_spider(self, spider):
-        bulk = []
+        country_bulk = []
         for item in self.items:
-            print(item)
-            obj = MinimumAmount(country=item["country"][0],
-                                amount=item["amount"][0])
-            bulk.append(obj)
-        MinimumAmount.objects.bulk_create(bulk)
+            obj = Countries(name=item["name"][0])
+            country_bulk.append(obj)
+        Countries.objects.bulk_create(country_bulk)
+
+
+class FoodPipeline(object):
+    def __init__(self):
+        self.items = []
+
+    def process_item(self, item, spider):
+        self.items.append(item)
+        return item
+
+    def close_spider(self, spider):
+        min_amount_bulk = []
+        misfits_bulk = []
+        for item in self.items:
+            country = Countries.objects.filter(name=item["country"][0])
+            if country:
+                obj = MinimumAmount(country=country,
+                                    amount=item["amount"][0])
+                min_amount_bulk.append(obj)
+            else:
+                obj = Misfits(name=item["country"][0],
+                              minimum_amount=item["amount"][0])
+                misfits_bulk.append(obj)
+        MinimumAmount.objects.bulk_create(min_amount_bulk)
+        Misfits.objects.bulk_create(misfits_bulk)
 
 
 class PovertyPipeline(object):
@@ -36,11 +59,18 @@ class PovertyPipeline(object):
         return item
 
     def close_spider(self, spider):
-        bulk = []
+        poverty_bulk = []
+        misfits_bulk = []
         for item in self.items:
-            print(item)
-            if
-            obj = PovertyPercent(country=item["country"][0],
-                                 percent=item["percent"][0])
-            bulk.append(obj)
-        PovertyPercent.objects.bulk_create(bulk)
+            country = Countries.objects.filter(name=item["country"][0])
+            if country:
+                obj = PovertyPercent(country=country,
+                                     percent=item["percent"][0],
+                                     data_year=item["data_year"][0])
+                poverty_bulk.append(obj)
+            else:
+                obj = Misfits(name=item["country"][0],
+                              percent=item["percent"][0])
+                misfits_bulk.append(obj)
+        PovertyPercent.objects.bulk_create(poverty_bulk)
+        Misfits.objects.bulk_create(misfits_bulk)

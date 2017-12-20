@@ -8,6 +8,10 @@
 from scrapy import item
 
 
+class ScrapyItemCountry(item.Item):
+    name = item.Field()
+
+
 class ScrapyItemMinimumAmount(item.Item):
     country = item.Field()
     amount = item.Field()
@@ -16,4 +20,5 @@ class ScrapyItemMinimumAmount(item.Item):
 class ScrapyItemPoverty(item.Item):
     country = item.Field()
     percent = item.Field()
+    data_year = item.Field()
 

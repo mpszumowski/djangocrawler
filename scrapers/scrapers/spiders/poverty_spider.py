@@ -25,7 +25,10 @@ class PovertySpider(scrapy.Spider):
         for row in rows:
             country = row.css('td.country div a::text').extract_first()
             percent = row.css('td:nth-last-child(2) div::text').extract_first()
+            data_year = row.css('td:nth-last-child(5) '
+                                + 'div::text').extract_first()
             l = ItemLoader(item=ScrapyItemPoverty(), response=response)
             l.add_value('country', country)
             l.add_value('percent', percent)
+            l.add_value('data_year', data_year)
             yield l.load_item()

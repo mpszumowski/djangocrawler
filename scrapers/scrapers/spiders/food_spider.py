@@ -7,7 +7,7 @@ class FoodSpider(scrapy.Spider):
     name = "food"
     custom_settings = {
         'ITEM_PIPELINES': {
-            'scrapers.pipelines.ScrapersPipeline': 300
+            'scrapers.pipelines.FoodPipeline': 300
         }
     }
 
