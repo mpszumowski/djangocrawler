@@ -12,6 +12,12 @@ class ScrapyItemCountry(item.Item):
     name = item.Field()
 
 
+class ScrapyItemPopulation(item.Item):
+    country = item.Field()
+    estimate = item.Field()
+    data_year = item.Field()
+
+
 class ScrapyItemMinimumAmount(item.Item):
     country = item.Field()
     amount = item.Field()

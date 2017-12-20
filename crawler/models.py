@@ -35,3 +35,4 @@ class Misfits(models.Model):
     percent_year = models.CharField(max_length=16, null=True)
     population_estimate = models.CharField(max_length=32, null=True)
     population_year = models.CharField(max_length=16, null=True)
+    date_scraped = models.DateField()
