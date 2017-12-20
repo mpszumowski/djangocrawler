@@ -3,18 +3,12 @@ from .models import (Countries, CountryPopulation, MinimumAmount,
                      PovertyPercent)
 
 
-class CountrySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Countries
-        fields = ("name", )
-
-
 class PopulationSerializer(serializers.HyperlinkedModelSerializer):
     country = serializers.ReadOnlyField(source="countries.name")
 
     class Meta:
         model = CountryPopulation
-        fields = ("country", "estimate", "data_year", "data_scraped")
+        fields = ("country", "estimate", "data_year", "date_scraped")
 
 
 class MinimumAmountSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,7 +16,7 @@ class MinimumAmountSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = MinimumAmount
-        fields = ("country", "amount", "data_scraped")
+        fields = ("country", "amount", "date_scraped")
 
 
 class PovertyPercentSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,4 +24,20 @@ class PovertyPercentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = PovertyPercent
-        fields = ("country", "percent", "data_year", "data_scraped")
+        fields = ("country", "percent", "data_year", "date_scraped")
+
+
+class CountrySerializer(serializers.HyperlinkedModelSerializer):
+    population = PopulationSerializer(source="countrypopulation_set",
+                                      many=True,
+                                      read_only=True)
+    poverty = PovertyPercentSerializer(source="povertypercent_set",
+                                       many=True,
+                                       read_only=True)
+    amount = MinimumAmountSerializer(source="minimumamount_set",
+                                     many=True,
+                                     read_only=True)
+    class Meta:
+        model = Countries
+        fields = ("name", "population", "poverty", "amount")
+
