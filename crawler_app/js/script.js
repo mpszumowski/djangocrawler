@@ -3,6 +3,7 @@ $(document).ready(function() {
     $.ajax({
         url: 'http://127.0.0.1:8000/countries/'
     }).done(function(data) {
+
         var tbody = $("tbody");
 
         for (var i = 0; i < data.length; i++) {
@@ -45,28 +46,44 @@ $(document).ready(function() {
             `);
             tbody.append(countryInfo);
         }
-        // function drawing from random country in the world
-        var random = function(upperLimit) {
-            return Math.random() * upperLimit
-        };
-        // enter lists from name column, pop column and total world population
-        var getRandomCountry = function(list, weight, max) {
-            var max = parseFloat($(max).text());
-            var sample = random(max);
-            var total = 0;
-            for (var i = 0; i < list.length; i++) {
-                var total = parseFloat(weight[i].innerText) + total;
-                if (total > sample) {
-                    return list[i].innerText
-                }
-            }
-            var randomNum = random(total)
-        };
-        var worldTotal = $('[data-region="World"] > td')[1];
-        var regionList = $("td:first-child");
-        var populationList = $("td:nth-child(2)");
-        console.log(getRandomCountry(regionList, populationList, worldTotal))
+            var footer = $("footer");
+        footer.append('<button id="fixedButton">Losuj</button>');
+
+        // add event to button
+        $("#fixedButton").on('click', function(event) {
+            var worldTotal = $('[data-region="World"] > td')[1];
+            var regionList = $("td:first-child");
+            var populationList = $("td:nth-child(2)");
+            var country = getRandomCountry(regionList,
+                populationList,
+                worldTotal);
+            var row = $(country).parent();
+            $("tr").removeClass("active");
+            $(row).toggleClass("active");
+            var offset = $(row).offset();
+            console.log(country)
+            $('html, body').animate({
+                scrollTop: offset.top;
+            });
+        });
     });
+    // function drawing from random country in the world
+    var random = function(upperLimit) {
+        return Math.random() * upperLimit
+    };
+    // enter lists from name column, pop column and total world population
+    var getRandomCountry = function(list, weight, max) {
+        var max = parseFloat($(max).text());
+        var sample = random(max);
+        var total = 0;
+        for (var i = 0; i < list.length; i++) {
+            var total = parseFloat(weight[i].innerText) + total;
+            if (total > sample) {
+                return list[i]
+            }
+        }
+        var randomNum = random(total)
+    };
 });
 
 
