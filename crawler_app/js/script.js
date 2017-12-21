@@ -63,7 +63,7 @@ $(document).ready(function() {
             var offset = $(row).offset();
             console.log(country)
             $('html, body').animate({
-                scrollTop: offset.top;
+                scrollTop: offset.top
             });
         });
     });
