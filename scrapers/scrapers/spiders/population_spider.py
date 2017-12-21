@@ -1,13 +1,13 @@
 from scrapy.loader import ItemLoader
 import scrapy
-from scrapers.items import ScrapyItemPopulation
+from ..items import ScrapyItemPopulation
 
 
 class PopulationSpider(scrapy.Spider):
     name = "population"
     custom_settings = {
         'ITEM_PIPELINES': {
-            'scrapers.pipelines.PopulationPipeline': 300
+            'scrapers.pipelines.PopulationPipeline': 700
         }
     }
 

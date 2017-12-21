@@ -1,13 +1,13 @@
 from scrapy.loader import ItemLoader
 import scrapy
-from scrapers.items import ScrapyItemMinimumAmount
+from ..items import ScrapyItemMinimumAmount
 
 
 class FoodSpider(scrapy.Spider):
     name = "food"
     custom_settings = {
         'ITEM_PIPELINES': {
-            'scrapers.pipelines.FoodPipeline': 300
+            'scrapers.pipelines.FoodPipeline': 900
         }
     }
 

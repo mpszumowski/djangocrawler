@@ -1,13 +1,13 @@
 from scrapy.loader import ItemLoader
 import scrapy
-from scrapers.items import ScrapyItemPoverty
+from ..items import ScrapyItemPoverty
 
 
 class PovertySpider(scrapy.Spider):
     name = "poverty"
     custom_settings = {
         'ITEM_PIPELINES': {
-            'scrapers.pipelines.PovertyPipeline': 300
+            'scrapers.pipelines.PovertyPipeline': 800
         }
     }
 

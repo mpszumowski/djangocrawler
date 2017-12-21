@@ -1,13 +1,13 @@
 from scrapy.loader import ItemLoader
 import scrapy
-from scrapers.items import ScrapyItemCountry
+from ..items import ScrapyItemCountry
 
 
 class CountriesSpider(scrapy.Spider):
     name = "countries"
     custom_settings = {
         'ITEM_PIPELINES': {
-            'scrapers.pipelines.CountryPipeline': 300
+            'scrapers.pipelines.CountryPipeline': 100
         }
     }
 

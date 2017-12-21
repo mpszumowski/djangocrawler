@@ -61,11 +61,22 @@ $(document).ready(function() {
             $("tr").removeClass("active");
             $(row).toggleClass("active");
             var offset = $(row).offset();
-            console.log(country)
+            console.log(country);
             $('html, body').animate({
                 scrollTop: offset.top
             });
         });
+
+        footer.append('<div><button>' +
+            '<span id="actualize">Aktualizuj dane</span></button></div>');
+        $("#actualize").on('click', function(event) {
+            $.ajax({
+            url: 'http://127.0.0.1:8000/update/'
+            }).done(function(data) {
+                $(location).attr('href', 'http://127.0.0.1:6800/jobs');
+                // location.reload(true)
+            })
+        })
     });
     // function drawing from random country in the world
     var random = function(upperLimit) {
