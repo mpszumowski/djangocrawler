@@ -71,9 +71,28 @@ $(document).ready(function() {
             '<span id="actualize">Aktualizuj dane</span></button></div>');
         $("#actualize").on('click', function(event) {
             $.ajax({
-            url: 'http://127.0.0.1:8000/update/'
+                url: 'http://127.0.0.1:8000/update/',
+                type: 'POST'
+            // tutaj wykonuję skrypt po otwarciu pająków
+            // wchodzę na /update/ metodą GET
+            // sprawdzam, czy data == (all().job_success ==> json)
+            // jeśli tak, przeładowuję stronę
+            // jeśli nie, ustawiam setTimeout na 5000 ms i znowu wchodzę
+            // na /update/ metodą GET
             }).done(function(data) {
-                $(location).attr('href', 'http://127.0.0.1:6800/jobs');
+                function pageReload() {
+                    $.ajax({
+                        url: 'http://127.0.0.1:8000/update/',
+                        type: 'GET'
+                    }).done(function(data) {
+                        if (data == true) {
+                            location.reload(true)
+                        } else {
+                            setTimeout(pageReload, 2000)
+                        }
+                    })
+                }
+                // $(location).attr('href', 'http://127.0.0.1:6800/jobs');
                 // location.reload(true)
             })
         })
@@ -82,7 +101,8 @@ $(document).ready(function() {
     var random = function(upperLimit) {
         return Math.random() * upperLimit
     };
-    // enter lists from name column, pop column and total world population
+    // enter lists from name column, population column
+    // and total world population
     var getRandomCountry = function(list, weight, max) {
         var max = parseFloat($(max).text());
         var sample = random(max);
@@ -93,7 +113,6 @@ $(document).ready(function() {
                 return list[i]
             }
         }
-        var randomNum = random(total)
     };
 });
 

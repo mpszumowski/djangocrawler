@@ -23,7 +23,7 @@ class SerializedView(APIView):
 
 class UpdateView(View):
 
-    def get(self, request):
+    def post(self, request):
         # works only with scrapyd server launched
         scrapyd = ScrapydAPI('http://localhost:6800')
         countries_task = scrapyd.schedule('default', 'countries')
@@ -35,3 +35,19 @@ class UpdateView(View):
                              'population_id': pop_task,
                              'poverty_id': poverty_task,
                              'status': 'started'})
+
+    def get(self, request):
+        countries_id = request.GET.get('countries_id', None)
+        food_id = request.GET.get('food_id', None)
+        population_id = request.GET.get('population_id', None)
+        poverty_id = request.GET.get('poverty_id', None)
+        scrapyd = ScrapydAPI('http://localhost:6800')
+        jobs = {'countries_status':
+                      scrapyd.job_status('default', countries_id),
+                  'food_status':
+                      scrapyd.job_status('default', food_id),
+                  'population_status':
+                      scrapyd.job_status('default', population_id),
+                  'poverty_status':
+                      scrapyd.job_status('default', poverty_id)}
+        # if countries_status == "finished" and etc.
