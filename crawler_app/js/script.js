@@ -1,9 +1,11 @@
-$(document).ready(function() {
+var $body = $("body");
 
+$(document).ready(function() {
+    $body.addClass("loading");
     $.ajax({
         url: 'http://127.0.0.1:8000/countries/'
     }).done(function(data) {
-
+        $body.removeClass("loading");
         var tbody = $("tbody");
 
         for (var i = 0; i < data.length; i++) {
@@ -58,8 +60,30 @@ $(document).ready(function() {
                 populationList,
                 worldTotal);
             var row = $(country).parent();
-            $("tr").removeClass("active");
-            $(row).toggleClass("active");
+            $("tr").removeClass("bg-danger bg-primary");
+            var minimum = $(row).children()[3].innerText;
+            if (minimum < 10) {
+                var amount = parseFloat(minimum);
+                var poverty = $(row).children()[2].innerText;
+                if (poverty == "..") {
+                } else {
+                    if (amount > 3.10) {
+                        var mod = 1;
+                        if (enoughFood(poverty, mod) == true) {
+                            $(row).toggleClass("bg-primary");
+                        } else {
+                            $(row).toggleClass("bg-danger");
+                        }
+                    } else {
+                        var mod = 0.5;
+                        if (enoughFood(poverty, mod) == true) {
+                            $(row).toggleClass("bg-primary");
+                        } else {
+                            $(row).toggleClass("bg-danger");
+                        }
+                    }
+                }
+            }
             var offset = $(row).offset();
             console.log(country);
             $('html, body').animate({
@@ -73,30 +97,51 @@ $(document).ready(function() {
             $.ajax({
                 url: 'http://127.0.0.1:8000/update/',
                 type: 'POST'
-            // tutaj wykonuję skrypt po otwarciu pająków
-            // wchodzę na /update/ metodą GET
-            // sprawdzam, czy data == (all().job_success ==> json)
-            // jeśli tak, przeładowuję stronę
-            // jeśli nie, ustawiam setTimeout na 5000 ms i znowu wchodzę
-            // na /update/ metodą GET
-            }).done(function(data) {
+            // }).done(function(data) {
+            //     $(location).attr('href', 'http://127.0.0.1:6800/jobs');
+
+            // // tutaj wykonuję skrypt po otwarciu pająków
+            // // wchodzę na /update/ metodą GET
+            // // sprawdzam, czy data == (all().job_success ==> json)
+            // // jeśli tak, przeładowuję stronę
+            // // jeśli nie, ustawiam setTimeout na 5000 ms i znowu wchodzę
+            // // na /update/ metodą GET
+            }).done(function(scrapersData) {
+                $body.addClass("loading");
+                pageReload();
                 function pageReload() {
                     $.ajax({
                         url: 'http://127.0.0.1:8000/update/',
-                        type: 'GET'
+                        type: 'GET',
+                        data: scrapersData
                     }).done(function(data) {
-                        if (data == true) {
+
+                        function checkStatus() {
+                            console.log(data);
+                            for (var p in data) {
+                                if (data.hasOwnProperty(p)) {
+                                    if (data[p] == "finished") {
+                                    } else {
+                                        return false
+                                    }
+                                }
+                            }
+                            return true
+                        }
+                        if (checkStatus() == true) {
+                            console.log("reload");
                             location.reload(true)
                         } else {
+                            console.log("settimeout")
                             setTimeout(pageReload, 2000)
                         }
                     })
                 }
-                // $(location).attr('href', 'http://127.0.0.1:6800/jobs');
-                // location.reload(true)
             })
         })
     });
+
+
     // function drawing from random country in the world
     var random = function(upperLimit) {
         return Math.random() * upperLimit
@@ -114,8 +159,19 @@ $(document).ready(function() {
             }
         }
     };
+    // check if enough food
+    var enoughFood = function(percent, modificator) {
+        if ((Math.random() * 100) > (parseFloat(percent) * modificator)){
+            return true
+        } else {
+            return false
+        }
+    }
 });
 
 
 
 
+
+            //     // $(location).attr('href', 'http://127.0.0.1:6800/jobs');
+            //     // location.reload(true)
