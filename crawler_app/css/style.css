@@ -1,6 +1,18 @@
-/*body {*/
-    /*background-color: #ABA48D;*/
-/*}*/
+body {
+    background-color: #3F484D;
+}
+header {
+    background-color: #2980b9;
+    color: #ffffff;
+}
+
+.table-own {
+    background-color: #ffffff;
+}
+
+.container {
+    width: 60%;
+}
 
 #fixedButton {
     margin: 0;
@@ -11,7 +23,7 @@
     height: 70px;
     z-index: 100;
     color: #ffffff;
-    background-color: #ff9000;
+    background-color: #07507F;
 }
 .modal {
     display:    none;
@@ -31,4 +43,8 @@ body.loading {
 }
 body.loading .modal {
     display: block;
+}
+.refresh {
+    background-color: #07507F;
+    color: #ffffff;
 }

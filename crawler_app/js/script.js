@@ -60,12 +60,13 @@ $(document).ready(function() {
                 populationList,
                 worldTotal);
             var row = $(country).parent();
-            $("tr").removeClass("bg-danger bg-primary");
+            $("tr").removeClass("bg-danger bg-primary bg-warning");
             var minimum = $(row).children()[3].innerText;
             if (minimum < 10) {
                 var amount = parseFloat(minimum);
                 var poverty = $(row).children()[2].innerText;
                 if (poverty == "..") {
+                    $(row).toggleClass("bg-warning")
                 } else {
                     if (amount > 3.10) {
                         var mod = 1;
@@ -91,7 +92,7 @@ $(document).ready(function() {
             });
         });
 
-        footer.append('<div><button>' +
+        footer.append('<div><button class="refresh">' +
             '<span id="actualize">Aktualizuj dane</span></button></div>');
         $("#actualize").on('click', function(event) {
             $.ajax({
