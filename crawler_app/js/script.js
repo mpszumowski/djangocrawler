@@ -59,10 +59,11 @@ $(document).ready(function() {
             var country = getRandomCountry(regionList,
                 populationList,
                 worldTotal);
+            console.log(country);
             var row = $(country).parent();
             $("tr").removeClass("bg-danger bg-primary bg-warning");
             var minimum = $(row).children()[3].innerText;
-            if (minimum < 10) {
+            if (minimum.length < 10) {
                 var amount = parseFloat(minimum);
                 var poverty = $(row).children()[2].innerText;
                 if (poverty == "..") {
@@ -86,7 +87,6 @@ $(document).ready(function() {
                 }
             }
             var offset = $(row).offset();
-            console.log(country);
             $('html, body').animate({
                 scrollTop: offset.top
             });
