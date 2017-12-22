@@ -133,7 +133,7 @@ $(document).ready(function() {
                             console.log("reload");
                             location.reload(true)
                         } else {
-                            console.log("settimeout")
+                            console.log("settimeout");
                             setTimeout(pageReload, 2000)
                         }
                     })
