@@ -4,8 +4,6 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# import sys
-# sys.path.insert(0, '/home/maciej/workspace/sCrapProject/')
 from datetime import datetime
 from crawler.models import (Countries, MinimumAmount, Misfits,
                             CountryPopulation, PovertyPercent)
@@ -58,6 +56,8 @@ class PopulationPipeline(object):
                                             date_scraped=datetime.now())
                     population_bulk.append(obj)
             else:
+                # create 'Misfits' objects for each data that
+                # does not correspond to any country from the current model
                 obj = Misfits(name=item["country"][0],
                               population_estimate=item["estimate"][0],
                               population_year=item["data_year"][0],
