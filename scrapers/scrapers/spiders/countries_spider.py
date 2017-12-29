@@ -22,6 +22,7 @@ class CountriesSpider(scrapy.Spider):
     def parse(self, response):
         data = response.css('#scrollTable tbody')
         rows = data.css('tr')
+        # exclude regions due to lack of data for readability reasons
         exclude = [
             'Hong Kong SAR, China', 'Macao SAR, China',
             'Sint Maarten (Dutch part)', 'St. Martin (French part)',
@@ -31,6 +32,7 @@ class CountriesSpider(scrapy.Spider):
             name = row.css('td.country div a::text').extract_first()
             if name in exclude:
                 continue
+            # create scrapy items
             l = ItemLoader(item=ScrapyItemCountry(), response=response)
             l.add_value('name', name)
             yield l.load_item()

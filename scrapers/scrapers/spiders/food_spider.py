@@ -19,10 +19,12 @@ class FoodSpider(scrapy.Spider):
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse_links)
 
+    # find all relevant links and access each country's data
     def parse_links(self, response):
         pages = response.css('.related_links a::attr(href)').extract()
         for page in pages:
             page = response.urljoin(page)
+            # normalize to USD
             page += '&displayCurrency=USD'
             yield scrapy.Request(page, callback=self.parse)
 

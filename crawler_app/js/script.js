@@ -63,26 +63,24 @@ $(document).ready(function() {
             var row = $(country).parent();
             $("tr").removeClass("bg-danger bg-primary bg-warning");
             var minimum = $(row).children()[3].innerText;
-            if (minimum.length < 10) {
+            var poverty = $(row).children()[2].innerText;
+            if (isNaN(parseFloat(minimum)) || poverty == "..") {
+                $(row).toggleClass("bg-warning")
+            } else {
                 var amount = parseFloat(minimum);
-                var poverty = $(row).children()[2].innerText;
-                if (poverty == "..") {
-                    $(row).toggleClass("bg-warning")
-                } else {
-                    if (amount > 3.10) {
-                        var mod = 1;
-                        if (enoughFood(poverty, mod) == true) {
-                            $(row).toggleClass("bg-primary");
-                        } else {
-                            $(row).toggleClass("bg-danger");
-                        }
+                if (amount > 3.10) {
+                    var mod = 1;
+                    if (enoughFood(poverty, mod) == true) {
+                        $(row).toggleClass("bg-primary");
                     } else {
-                        var mod = 0.5;
-                        if (enoughFood(poverty, mod) == true) {
-                            $(row).toggleClass("bg-primary");
-                        } else {
-                            $(row).toggleClass("bg-danger");
-                        }
+                        $(row).toggleClass("bg-danger");
+                    }
+                } else {
+                    var mod = 0.5;
+                    if (enoughFood(poverty, mod) == true) {
+                        $(row).toggleClass("bg-primary");
+                    } else {
+                        $(row).toggleClass("bg-danger");
                     }
                 }
             }
@@ -98,9 +96,6 @@ $(document).ready(function() {
             $.ajax({
                 url: 'http://127.0.0.1:8000/update/',
                 type: 'POST'
-            // }).done(function(data) {
-            //     $(location).attr('href', 'http://127.0.0.1:6800/jobs');
-
             // // tutaj wykonuję skrypt po otwarciu pająków
             // // wchodzę na /update/ metodą GET
             // // sprawdzam, czy data == (all().job_success ==> json)
