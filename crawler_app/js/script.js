@@ -1,13 +1,13 @@
-var $body = $("body");
-
 $(document).ready(function() {
+    // add loader during ajax request
+    var $body = $("body");
     $body.addClass("loading");
     $.ajax({
         url: 'http://127.0.0.1:8000/countries/'
     }).done(function(data) {
         $body.removeClass("loading");
         var tbody = $("tbody");
-
+        // create table
         for (var i = 0; i < data.length; i++) {
             var name = data[i].name;
             // limit data to countries and World
@@ -51,16 +51,18 @@ $(document).ready(function() {
             var footer = $("footer");
         footer.append('<button id="fixedButton">Losuj</button>');
 
-        // add event to button
+        // add draw, scroll and highlight event to button
         $("#fixedButton").on('click', function(event) {
+            // draw country
             var worldTotal = $('[data-region="World"] > td')[1];
             var regionList = $("td:first-child");
             var populationList = $("td:nth-child(2)");
             var country = getRandomCountry(regionList,
                 populationList,
                 worldTotal);
-            console.log(country);
             var row = $(country).parent();
+            // highlight red if under poverty rate, blue if above
+            // and yellow if data lacking
             $("tr").removeClass("bg-danger bg-primary bg-warning");
             var minimum = $(row).children()[3].innerText;
             var poverty = $(row).children()[2].innerText;
@@ -68,6 +70,8 @@ $(document).ready(function() {
                 $(row).toggleClass("bg-warning")
             } else {
                 var amount = parseFloat(minimum);
+                // add arbitrary modificator in case of populations where
+                // minimum is below the poverty rate of $3.10
                 if (amount > 3.10) {
                     var mod = 1;
                     if (enoughFood(poverty, mod) == true) {
@@ -84,24 +88,24 @@ $(document).ready(function() {
                     }
                 }
             }
+            // add scroll event
             var offset = $(row).offset();
             $('html, body').animate({
                 scrollTop: offset.top
             });
         });
-
+        // actualize function
         footer.append('<div><button class="refresh">' +
             '<span id="actualize">Aktualizuj dane</span></button></div>');
         $("#actualize").on('click', function(event) {
             $.ajax({
                 url: 'http://127.0.0.1:8000/update/',
                 type: 'POST'
-            // // tutaj wykonuję skrypt po otwarciu pająków
-            // // wchodzę na /update/ metodą GET
-            // // sprawdzam, czy data == (all().job_success ==> json)
-            // // jeśli tak, przeładowuję stronę
-            // // jeśli nie, ustawiam setTimeout na 5000 ms i znowu wchodzę
-            // // na /update/ metodą GET
+            // launch scrapers with POST method
+            // add loading animation and access view with GET method
+            // each 2 seconds
+            // if each task status == "finished" reload page
+            // else repeat GET
             }).done(function(scrapersData) {
                 $body.addClass("loading");
                 pageReload();
@@ -113,7 +117,6 @@ $(document).ready(function() {
                     }).done(function(data) {
 
                         function checkStatus() {
-                            console.log(data);
                             for (var p in data) {
                                 if (data.hasOwnProperty(p)) {
                                     if (data[p] == "finished") {
@@ -125,10 +128,8 @@ $(document).ready(function() {
                             return true
                         }
                         if (checkStatus() == true) {
-                            console.log("reload");
                             location.reload(true)
                         } else {
-                            console.log("settimeout");
                             setTimeout(pageReload, 2000)
                         }
                     })

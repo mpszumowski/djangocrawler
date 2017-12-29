@@ -5,15 +5,12 @@ header {
     background-color: #2980b9;
     color: #ffffff;
 }
-
 .table-own {
     background-color: #ffffff;
 }
-
 .container {
     width: 60%;
 }
-
 #fixedButton {
     margin: 0;
     position: fixed;
