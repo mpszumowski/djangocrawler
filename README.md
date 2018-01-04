@@ -14,7 +14,7 @@ The button at the top-left edge of the page draws a random country in the world 
 
 In a word, the marker indicates whether you surely starve. If it turns blue it is still probable that the whole of your budget would be spent on food if you chose to eat the minimal 2,400kcal ration, but it is indeterminable by the nature of scraped data.
 
-<u>Disclaimer:</u>
+<b><u>Disclaimer:</u></b>
 This is not an exercise in statistics, but in scrapy and django frameworks. The accuracy of collected data relies on the methodology of World Bank and Numbeo.com. Their juxtaposition, on the other hand, is not fully correct, because the data have discrete rather than continuous character.
 
 
