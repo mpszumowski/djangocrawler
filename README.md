@@ -8,7 +8,7 @@ This app is designed to 1) extract data about world population and poverty rates
 This is not an exercise in statistics, but in scrapy and django frameworks. The accuracy of collected data relies on the methodology of World Bank and Numbeo.com. Their juxtaposition, on the other hand, is not fully correct, because the data have discrete rather than continuous character.
 
 <h3>How it works</h3>
-[screenshot](screens/Screenshot.jpg)
+[screenshot](https://github.com/mpszumowski/djangocrawler/blob/master/screens/Screenshot.jpg)
 
 <h3>Sources:</h3>
 
