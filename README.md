@@ -2,6 +2,7 @@
 
 <h3>Do you feel lucky?</h3>
 
+Take a look:
 http://mpszumowski.pythonanywhere.com/index.html
 
 A django-rest app which gathers and updates data via scrapy framework
