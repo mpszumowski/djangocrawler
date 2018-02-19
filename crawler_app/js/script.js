@@ -7,13 +7,16 @@ $(document).ready(function() {
     }).done(function(data) {
         $body.removeClass("loading");
         var tbody = $("tbody");
+        
         // create table
         for (var i = 0; i < data.length; i++) {
             var name = data[i].name;
+            
             // limit data to countries and World
             if (name == "East Asia & Pacific") {
                 break
             }
+            
             // clean and parse population data
             var population = data[i].population[0].estimate;
             if (population == "0.0") {
@@ -23,12 +26,14 @@ $(document).ready(function() {
                 var population = "5.0"
             }
             var population = population.replace(",", "")
+            
             // clean poverty data
             if (data[i].poverty.length != 0) {
                 var poverty = data[i].poverty[0].percent
             } else {
                 var poverty = "brak danych"
             }
+            
             // clean amount data
             if (data[i].amount.length != 0) {
                 var amount = data[i].amount[0].amount;
@@ -38,6 +43,8 @@ $(document).ready(function() {
             } else {
                 var amount = "brak danych"
             }
+            
+            // add table
             var countryInfo = $(`
                 <tr data-region="${name}">
                     <td>${name}</td>
@@ -48,11 +55,14 @@ $(document).ready(function() {
             `);
             tbody.append(countryInfo);
         }
-            var footer = $("footer");
+        
+        // add drawing button
+        var footer = $("footer");
         footer.append('<button id="fixedButton">Losuj</button>');
 
         // add draw, scroll and highlight event to button
         $("#fixedButton").on('click', function(event) {
+            
             // draw country
             var worldTotal = $('[data-region="World"] > td')[1];
             var regionList = $("td:first-child");
@@ -61,6 +71,7 @@ $(document).ready(function() {
                 populationList,
                 worldTotal);
             var row = $(country).parent();
+            
             // highlight red if under poverty rate, blue if above
             // and yellow if data lacking
             $("tr").removeClass("bg-danger bg-primary bg-warning");
@@ -88,19 +99,22 @@ $(document).ready(function() {
                     }
                 }
             }
+            
             // add scroll event
             var offset = $(row).offset();
             $('html, body').animate({
                 scrollTop: offset.top
             });
         });
-        // actualize function
+        
+        // add actualize function
         footer.append('<div><button class="refresh">' +
             '<span id="actualize">Aktualizuj dane</span></button></div>');
         $("#actualize").on('click', function(event) {
             $.ajax({
                 url: 'http://127.0.0.1:8000/update/',
                 type: 'POST'
+            
             // launch scrapers with POST method
             // add loading animation and access view with GET method
             // each 2 seconds
@@ -143,6 +157,7 @@ $(document).ready(function() {
     var random = function(upperLimit) {
         return Math.random() * upperLimit
     };
+    
     // enter lists from name column, population column
     // and total world population
     var getRandomCountry = function(list, weight, max) {
@@ -165,10 +180,3 @@ $(document).ready(function() {
         }
     }
 });
-
-
-
-
-
-            //     // $(location).attr('href', 'http://127.0.0.1:6800/jobs');
-            //     // location.reload(true)
