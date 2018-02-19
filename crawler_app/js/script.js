@@ -56,7 +56,7 @@ $(document).ready(function() {
             // draw country
             var worldTotal = $('[data-region="World"] > td')[1];
             var regionList = $("td:first-child");
-            var populationList = $("td:nth-child(2)");
+            var populationList = $("td:nth-child(2)").slice(0, -2);
             var country = getRandomCountry(regionList,
                 populationList,
                 worldTotal);
