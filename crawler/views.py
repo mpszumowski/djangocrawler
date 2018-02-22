@@ -9,12 +9,8 @@ from scrapyd_api import ScrapydAPI
 
 class SerializedView(APIView):
 
-    def all_countries(self):
-        countries = Countries.objects.all()
-        return countries
-
     def get(self, request, format=None):
-        serializer = CountrySerializer(self.all_countries(),
+        serializer = CountrySerializer(Countries.all_countries(),
                                        many=True,
                                        context={"request": request})
         return Response(serializer.data)

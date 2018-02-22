@@ -7,6 +7,11 @@ class Countries(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def all_countries(cls):
+        countries = cls.objects.all()
+        return countries
+
 
 class MinimumAmount(models.Model):
     country = models.ForeignKey(Countries, on_delete=True)
